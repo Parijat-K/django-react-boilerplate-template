@@ -1,5 +1,5 @@
 # django-react-boilerplate
-Django React Boilerplate - Hybrid Model, with Session authentication
+Django React Boilerplate - Hybrid Model, with Session authentication and CSRF Protection
 
 ### Stage
 Work In Progress
