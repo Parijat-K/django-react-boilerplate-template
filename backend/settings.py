@@ -27,13 +27,16 @@ SECRET_KEY = 'ojir_qa4(_!3i%17q$p6ers0(*j-%47&ie3xdowz(9%3j9(jn-'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DJANGO_ENV') == 'development'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Application definition
 
 INSTALLED_APPS = [
     'react_container.apps.ReactContainerConfig',
+    'api.apps.ApiConfig',
+    'rest_framework',
+    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -43,10 +46,17 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 ]
 
+# CORS allowed only in DEBUG mode
+# if DEBUG:
+#     INSTALLED_APPS.append('corsheaders')
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -71,6 +81,19 @@ TEMPLATES = [
         },
     },
 ]
+
+# Restrict APIs to authenticated users only in Production
+DEFAULT_PERMISSION = 'rest_framework.permissions.AllowAny' if DEBUG else 'rest_framework.permissions.IsAuthenticated'
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    # 'DEFAULT_AUTHENTICATION_CLASSES': [
+    #     'rest_framework.authentication.SessionAuthentication',
+    # ],
+    # 'DEFAULT_PERMISSION_CLASSES': [
+    #     DEFAULT_PERMISSION,
+    # ]
+}
 
 WSGI_APPLICATION = 'backend.wsgi.application'
 
@@ -123,9 +146,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATICFILES_DIRS = [os.path.join(FRONTEND_DIR, 'build', 'static')]
-STATICFILES_STORAGE = ('whitenoise.storage.CompressedManifestStaticFilesStorage')
+STATICFILES_STORAGE = ('react_container.storage.StaticFilesStorage')
 STATIC_ROOT = os.path.join(BACKEND_DIR, 'static')
 
 STATIC_URL = '/static/'
 
-WHITENOISE_ROOT = os.path.join(FRONTEND_DIR, 'build', 'root')
+WHITENOISE_ROOT = os.path.join(FRONTEND_DIR, 'build')
