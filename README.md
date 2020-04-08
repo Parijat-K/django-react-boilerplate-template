@@ -83,7 +83,7 @@ The boilerplate project already consists of an example To-Do application. This e
 
 
 ## License
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
 
 ## Acknowledgments
 This boilerplate template is inspired by the article [Making React and Django play well together - the “hybrid app” model](https://medium.com/fractal-ideas/making-react-and-django-play-well-together-the-hybrid-app-model-215991793cf6) by [Aymeric Augustin](https://myks.org/en/)
