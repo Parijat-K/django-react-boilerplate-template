@@ -22,7 +22,7 @@ FRONTEND_DIR = os.path.abspath(os.path.join(BACKEND_DIR, 'frontend'))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'ojir_qa4(_!3i%17q$p6ers0(*j-%47&ie3xdowz(9%3j9(jn-'
+SECRET_KEY = '{{ secret_key }}'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DJANGO_ENV') == 'development'
@@ -35,8 +35,13 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 INSTALLED_APPS = [
     'react_container.apps.ReactContainerConfig',
     'api.apps.ApiConfig',
-    'rest_framework',
-    'corsheaders',
+    'rest_framework']
+
+# Add CORS only for Development setup
+if DEBUG:
+    INSTALLED_APPS.append('corsheaders')
+
+INSTALLED_APPS.extend([
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -44,25 +49,28 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
-]
+])
 
 # CORS allowed only in DEBUG mode
-# if DEBUG:
-#     INSTALLED_APPS.append('corsheaders')
-CORS_ORIGIN_ALLOW_ALL = True
-CORS_ALLOW_CREDENTIALS = True
+if DEBUG:
+    CORS_ORIGIN_ALLOW_ALL = True
+    CORS_ALLOW_CREDENTIALS = True
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware']
+
+if DEBUG:
+    MIDDLEWARE.append('corsheaders.middleware.CorsMiddleware')
+
+MIDDLEWARE.extend([
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-]
+])
 
 ROOT_URLCONF = 'backend.urls'
 
@@ -85,14 +93,24 @@ TEMPLATES = [
 # Restrict APIs to authenticated users only in Production
 DEFAULT_PERMISSION = 'rest_framework.permissions.AllowAny' if DEBUG else 'rest_framework.permissions.IsAuthenticated'
 
+#Other settings based on DEBUG mode
+DEFAULT_RENDERER = 'rest_framework.renderers.BrowsableAPIRenderer' if DEBUG else 'rest_framework.renderers.JSONRenderer'
+
+
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    # 'DEFAULT_AUTHENTICATION_CLASSES': [
-    #     'rest_framework.authentication.SessionAuthentication',
-    # ],
-    # 'DEFAULT_PERMISSION_CLASSES': [
-    #     DEFAULT_PERMISSION,
-    # ]
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        DEFAULT_PERMISSION,
+    ],
+    'DEFAULT_RENDERER_CLASSES': [
+        DEFAULT_RENDERER,
+    ],
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.JSONParser',
+    ]
 }
 
 WSGI_APPLICATION = 'backend.wsgi.application'
