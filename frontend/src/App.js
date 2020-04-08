@@ -8,7 +8,7 @@ import {
 } from "react-router-dom";
 
 import SignIn from './LoginView';
-import ToDoList from './ToDoView';
+import ToDoView from './ToDoView';
 
 function App() {
   return (
@@ -63,7 +63,7 @@ function AppEntry() {
             Main Application
             -- Feel free to switch with your own Application
           */}
-          <ToDoList userdetails={user} />
+          <ToDoView userdetails={user} />
         </PrivateRoute>
       </Switch>
     </section>

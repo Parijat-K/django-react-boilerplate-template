@@ -2,6 +2,7 @@ import React from 'react';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
+import DeleteIcon from '@material-ui/icons/Delete';
 import {
   AppBar,
   Container,
@@ -11,10 +12,17 @@ import {
   Toolbar,
   Typography,
   Link,
-  Menu,
-  MenuItem
+  List,
+  ListItem,
+  TextField,
+  Button,
+  Checkbox,
+  Grid,
+  ListItemText,
+  ListItemIcon,
+  ListItemSecondaryAction
 } from '@material-ui/core';
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { config } from './config';
 
 const useStyles = makeStyles((theme) => ({
@@ -98,13 +106,12 @@ function Copyright() {
   );
 }
 
-function ToDoList({ userdetails }) {
+function ToDoView({ userdetails }) {
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
+  const [todos, setTodos] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
 
   let history = useHistory();
-  let location = useLocation();
 
   function signoff() {
     var url = `${config.base_url}/auth/logout`;
@@ -128,6 +135,46 @@ function ToDoList({ userdetails }) {
       .catch((error) => {
         console.error('Something went wrong with connection!:', error);
       });
+  }
+
+  const getData = React.useCallback(() => {
+    var url = `${config.base_url}/api/todo`;
+    (loading) && fetch(url, {
+      method: 'GET',
+      credentials: config.credentials
+    })
+      .then(response => {
+        const contentType = response.headers.get("content-type");
+        if (!response.ok) {
+          return [];
+        } else if (contentType && contentType.indexOf("application/json") !== -1) {
+          return response.json();
+        } else {
+          return [];
+        }
+      })
+      .then(res => {
+        setTodos(res);
+        setLoading(false);
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.error('Something went wrong with connection!:', error);
+      });
+  }, [loading]);
+
+  React.useEffect(getData, [loading]);
+
+  function handleRemove(id) {
+
+  }
+
+  function handleCheck(id, checkStatus) {
+    todos[id].is_complete = checkStatus;
+  }
+
+  function handleAdd(todo) {
+
   }
 
   return (
@@ -169,14 +216,16 @@ function ToDoList({ userdetails }) {
 
       {/* Main Body */}
       <Container component="main" className={classes.main} maxWidth="sm">
-        <Typography variant="h2" component="h1" gutterBottom>
-          Placeholder Title
+        <Typography variant="h5" component="h2" align="center" gutterBottom>
+          To-Do list
         </Typography>
-        <Typography variant="h5" component="h2" gutterBottom>
-          {'Placeholder line 1.'}
-          {'Placeholder line 2'}
-        </Typography>
-        <Typography variant="body1">Placeholder body.</Typography>
+        <TodoList
+          todos={todos}
+          handleRemove={handleRemove}
+          handleCheck={handleCheck}
+        />
+        <br />
+        <AddTodo handleAdd={handleAdd} />
       </Container>
 
       {/* Sticky Footer */}
@@ -191,4 +240,113 @@ function ToDoList({ userdetails }) {
 
 }
 
-export default ToDoList;
+function TodoList({ todos, handleRemove, handleCheck }) {
+  var todoNode = todos.map((todo, index) => {
+    return (
+      <Todo
+        key={index}
+        todo={todo.task}
+        id={index}
+        checked={todo.is_complete}
+        handleRemove={handleRemove}
+        handleCheck={handleCheck}
+      />
+    )
+  });
+
+  return (
+    <List style={{ marginLeft: '5%' }}>
+      {todoNode}
+    </List>
+  )
+}
+
+const listElementStyles = {
+  fontSize: 18,
+  lineHeight: '24px',
+}
+
+const listElementCheckedStyles = {
+  ...listElementStyles,
+  textDecoration: 'line-through',
+}
+
+function Todo({ todo, id, checked, handleRemove, handleCheck }) {
+
+  const [selected, setSelected] = React.useState(checked);  
+  const listStyles = !selected ? listElementStyles : listElementCheckedStyles;
+
+  function onClick(event) {
+    handleRemove(id)
+  }
+
+  function onCheck(event) {
+    setSelected(event.target.checked);
+    handleCheck(id, selected);
+  }
+
+  return (
+    <ListItem key={id} divider={true} style={listStyles}>
+      <ListItemText id={id} primary={todo} />
+      <ListItemIcon>
+        <Checkbox
+          edge="start"
+          checked={selected}
+          tabIndex={-1}
+          disableRipple
+          inputProps={{ 'aria-labelledby': id }}
+          onChange={onCheck}
+        />
+      </ListItemIcon>
+      <ListItemSecondaryAction>
+        <IconButton edge="end" aria-label="delete" onClick={onClick}>
+          <DeleteIcon />
+        </IconButton>
+      </ListItemSecondaryAction>
+    </ListItem>
+  
+  )
+}
+
+function AddTodo({ handleAdd }) {
+
+  const [inputValue, setInputValue] = React.useState("");
+
+  function onClick(event) {
+    event.preventDefault();
+    var todo = inputValue;
+    if (todo === '') return
+    else {
+      var form = document.getElementById("myForm");
+      form.reset()
+      handleAdd(todo);
+      setInputValue("");
+    }
+  }
+
+  return (
+    <Container>
+      <form id="myForm">
+        <Grid container spacing={1}>
+          <Grid item xs={11}>
+            <TextField
+              fullWidth={true}
+              onChange={(e) => setInputValue(e.target.value)}
+            >
+            </TextField>
+          </Grid>
+          <Grid item xs={1}>
+            <Button variant="contained" color="primary" type="submit" primary="true" onClick={onClick}>
+              Add
+              </Button>
+          </Grid>
+        </Grid>
+
+      </form>
+
+    </Container>
+  );
+
+}
+
+export default ToDoView;
