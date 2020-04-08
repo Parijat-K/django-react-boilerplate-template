@@ -4,6 +4,8 @@ Django React Boilerplate - Hybrid Model, with Session authentication and CSRF Pr
 ## Installation
 Run following commands at the root of the project directory
 ```cmd
+django-admin.py startproject --template=https://github.com/Parijat29/django-react-boilerplate/archive/master.zip <project_name>
+cd <project_name>
 pip install requirements.txt
 cd frontend
 npm install
