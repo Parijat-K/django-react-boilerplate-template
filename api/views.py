@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from rest_framework import serializers
 from rest_framework import generics, filters
 from .models import ToDo
 from .serializers import ToDoSerializer
@@ -13,4 +14,11 @@ class ToDoListCreate(generics.ListCreateAPIView):
 
 
     def get_queryset(self):
+        if self.request.user.is_anonymous:
+            return ToDo.objects.none()
         return ToDo.objects.filter(created_by=self.request.user)
+
+    def perform_create(self, serializer):
+        if self.request.user.is_anonymous:
+            raise serializers.ValidationError("Anonymous users not allowed to create records")
+        serializer.save(created_by=self.request.user)
