@@ -1,5 +1,5 @@
 # Django-React-Boilerplate
-Django React Boilerplate - Hybrid Model, with Session authentication and CSRF Protection
+This is a boilerplate project that can be used as template for any websites (portfolio, e-commerce etc.) with Django backend and React frontend. It follows **Hybrid Model**, which means it can be deployed as a single unit in to the same server. It is setup to use session based authentication and includes example of how to use them. It also provides safety from **CSRF** attacks.
 
 ## Installation
 Run following commands where you want to create the project
@@ -65,7 +65,7 @@ The **“Hybrid Application”** model is usually implemented by building the fr
 
 ### Any Additional Benifits? ([^ref1])
 * Good SEO.
-* The application can be trated as single unit
+* The application can be treated as single unit
 * Good for trying out Modern JavaScript frameworks on existing Django projects 
 
 ### How does the Authetication work?
@@ -80,6 +80,14 @@ The boilerplate project already consists of an example To-Do application. This e
 ### High-level Architecture
 ![Alt text](./diagram.svg)
 
+## How it looks?
+| ![Sign in view](./sign_in_view.png) | 
+|:--:| 
+| *Sign-in page* |
+
+| ![Main view](./main_view.png) | 
+|:--:| 
+| *Main page* |
 
 
 ## License
