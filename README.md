@@ -82,9 +82,13 @@ The boilerplate project already consists of an example To-Do application. This e
 
 ## How it looks?
 
-![Sign in view](./sign_in_view.PNG)
-![Main view](./main_view.PNG)
+| ![Sign in view](./sign_in_view.PNG) | 
+|:--:| 
+| *Sign-in page* |
 
+| ![Main view](./main_view.PNG) | 
+|:--:| 
+| *Main page* |
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
