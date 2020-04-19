@@ -81,6 +81,7 @@ The boilerplate project already consists of an example To-Do application. This e
 ![Alt text](./diagram.svg)
 
 ## How it looks?
+
 | ![Sign in view](./sign_in_view.PNG) | 
 |:--:| 
 | *Sign-in page* |
