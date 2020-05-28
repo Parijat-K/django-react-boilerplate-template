@@ -49,8 +49,6 @@ INSTALLED_APPS.extend([
 ])
 
 # CORS allowed only in DEBUG mode
-# if DEBUG:
-#     INSTALLED_APPS.append('corsheaders')
 if DEBUG:
     CORS_ORIGIN_ALLOW_ALL = True
     CORS_ALLOW_CREDENTIALS = True
