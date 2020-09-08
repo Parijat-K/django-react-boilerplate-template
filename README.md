@@ -1,4 +1,4 @@
-# Django-React-Boilerplate
+# Django-React Boilerplate Template
 This is a boilerplate project that can be used as a template for any websites (portfolio, e-commerce etc.) with Django backend and React frontend. It follows the Hybrid Model, which means it can be deployed as a single unit into the same server. It is set up to use session-based authentication and includes an example of how to use them. It also provides safety from CSRF attacks.
 
 ## Installation
