@@ -1,5 +1,5 @@
 # Django-React Boilerplate Template
-This is a boilerplate project that can be used as a template for any websites (portfolio, e-commerce etc.) with Django backend and React frontend. It follows the Hybrid Model, which means it can be deployed as a single unit into the same server. It is set up to use session-based authentication and includes an example of how to use them. It also provides safety from CSRF attacks.
+This is a boilerplate/template project that can be used to build any websites (portfolio, e-commerce etc.) with Django backend and React frontend. It follows the Hybrid Model, which means it can be deployed as a single unit into the same server. It is set up to use session-based authentication and includes an example of how to use them. It also provides safety from CSRF attacks. This template does not require you to spin up different servers for backend and frontend. The Django server itself acts as a container to run the React application.
 
 ## Installation
 Run following commands where you want to create the project
@@ -62,6 +62,7 @@ waitress-serve backend.wsgi:application
 ## What is Hybrid Model?
 Usually for Single Page Application (SPA)s, the straight forward approach is to serve the frontend and backend in different servers and communicate via REST APIs between the two servers. While this approach might make sense for big teams and enterprise level applications, for small teams or projects it might become an extra overhead to manage and deploy two different applications in two different server instances.  
 The **“Hybrid Application”** model is usually implemented by building the frontend, injecting it into the backend’s build process, and deploying the result as a single unit. 
+This template project follows the above logic to give you a boilerplate so that you can start coding your application right away without worrying about the complicated setup.  
 
 ### Any Additional Benifits? ([^ref1])
 * Good SEO.
@@ -69,7 +70,7 @@ The **“Hybrid Application”** model is usually implemented by building the fr
 * Good for trying out Modern JavaScript frameworks on existing Django projects 
 
 ### How does the Authetication work?
-Since both the forntend and backend is served by same server, all the API calls will be of **same-origin**. This simplifies the authentication process. This boilerplate utilizes Django's built-in **Session-Based** authentication. Django has a very powerful middleware that helps against **CSRF** attacks. This boilerplate project utilizes the same middleware. Different permission based access control can also be used as per Django's core features.
+Since both the forntend and backend is served by same server, all the API calls will be of **same-origin**. This simplifies the authentication process. This boilerplate utilizes Django's built-in **Session-Based** authentication. Django has a very powerful middleware that helps against **CSRF** attacks. This boilerplate/template project utilizes the same middleware. Different permission based access control can also be used as per Django's core features.
 
 ### Why is django-cors-headers dependecy needed?
 **django-cors-headers** is used only in development or DEBUG mode. This project's **settings.py** is preconfigured to conditionally add it **django-cors-headers** and its related parameters only if the application is running in DEBUG mode.
