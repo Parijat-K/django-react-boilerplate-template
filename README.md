@@ -45,10 +45,10 @@ waitress-serve backend.wsgi:application
 
 ## Dependencies
 ### Python
-* Django==2.2.10
+* Django==2.2.18
 * requests==2.22.0
 * whitenoise==4.1.4
-* djangorestframework==3.11.0
+* djangorestframework==3.11.2
 * waitress==1.4.3
 * django-cors-headers==3.0.2 (Only used in Development/DEBUG mode)
 
