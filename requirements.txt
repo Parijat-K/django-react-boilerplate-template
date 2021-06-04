@@ -1,5 +1,5 @@
 requests==2.22.0
-Django==2.2.20
+Django==2.2.21
 whitenoise==4.1.4
 djangorestframework==3.11.2
 django-cors-headers==3.0.2
